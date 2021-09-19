@@ -36,7 +36,7 @@ We will save all the supporting documents (answer documents) from train and test
 
 We have 9140 question-answer pairs in the train set, 2286 in the test set, and a total of 11426 supporting documents.
 
-Refer to code for data pre-processing 👉 [here](https://github.com/krishnarevi/TSAI_END2.0_Session14/blob/main/part1_session14.ipynb)
+Refer to code for data pre-processing 👉 [here](https://github.com/krishnarevi94/Capstone/blob/main/data_processing.py)
 
 ## 4. Model Overview
 
