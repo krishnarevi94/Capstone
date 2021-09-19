@@ -18,7 +18,6 @@ As mentioned in the introduction, data is collected from the following five reso
 4. PyTorch's GitHub: Downloaded all the closed issues from the GitHub repo of PyTorch related projects
 5. PyTorch Youtube: Download the subtitles for the YouTube videos discussing PyTorch Interview questions using [youtube-transcript-API](https://github.com/jdepoix/youtube-transcript-api)
 
-Refer to code for web scraping with Stack Exchange API 👉 [here](https://github.com/krishnarevi/TSAI_END2.0_Session14/blob/main/part1_session14.ipynb)
 
 ## 3. Data Set Preparation 
 
