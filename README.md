@@ -187,19 +187,19 @@ ROUGE-2 and ROUGE-3 would use bigrams and trigrams respectively. Once we have de
 
 The recall counts the number of overlapping n-grams found in both the model output and reference — then divides this number by the total number of n-grams in the reference. It looks like this:
 
-<img src="README.assets/recall_rouge.png" alt="recall_rouge" style="zoom:50%;" />
+<img src="README.assets/recall_rouge.png" alt="recall_rouge" style="zoom:30%;" />
 
 ###### Precision
 
 The precision metric is calculated in almost the same way, but rather than dividing by the reference n-gram count, we divide by the model n-gram count.
 
-<img src="README.assets/precision_rouge.png" alt="precision_rouge" style="zoom:50%;" />
+<img src="README.assets/precision_rouge.png" alt="precision_rouge" style="zoom:30%;" />
 
 ###### F1-Score
 
 Now that we both the recall and precision values, we can use them to calculate our ROUGE F1 score like so:
 
-<img src="README.assets/f1score_rouge.png" alt="f1score_rouge" style="zoom:50%;" />
+<img src="README.assets/f1score_rouge.png" alt="f1score_rouge" style="zoom:30%;" />
 
 ###### ROUGE-L
 
@@ -428,4 +428,4 @@ Some of these answers make sense! The model seems to sometimes struggle with sta
 4. [ROUGE](https://towardsdatascience.com/the-ultimate-performance-metric-in-nlp-111df6c64460FAISS)
 5. [FAISS](https://github.com/facebookresearch/faiss/)
 
-Refer to the complete solution 👉 [here](https://github.com/krishnarevi/TSAI_END2.0_Session14/blob/main/part1_session14.ipynb)
+Refer to the complete solution 👉 [here](https://github.com/krishnarevi94/Capstone/blob/main/Question_answer_system.ipynb)
