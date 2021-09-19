@@ -135,8 +135,8 @@ The final step is a final encoding step for each vector before it is indexed. Th
 There are several options:
 
 - Flat — Vectors are stored as is, without any encoding.
-- PQ — Applies [product quantization](http://kaiminghe.com/cvpr13/index.html#:~:text=Product quantization (PQ) is an,then quantize these subspaces separately.).
-- SQ — Applies [scalar quantization](http://people.ece.umn.edu/~arya/EE5585/lecture13.pdf).
+- PQ — Applies  product quantization 
+- SQ — Applies scalar quantization
 
 It’s worth noting that even with the *Flat* encoding, FAISS is still going to be very fast.
 
