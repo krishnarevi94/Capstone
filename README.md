@@ -97,7 +97,7 @@ Once the model is trained, we use the model to compute passage embeddings for al
 
 Now that we have trained our model to compute query and answer embeddings and used it to compute passage embeddings for all our document snippets in the corpus, let's see whether it can find supporting evidence for a new question. At test time, the dense retriever model encodes the question and compares its embedding to the pre-computed representation of all the document snippets in the corpus by doing Max Inner Product Search. The ten passages with the closest embedding are returned to create the support document. 
 
-![using the Trained Dense Retriever](README.assets/using the Trained Dense Retriever.PNG)
+![use_trained_retriever](README.assets/use_trained_retriever.PNG)
 
 The MIPS part can be executed efficiently with the faiss library. Additionally, since we computed 128-dimensional passage embeddings, the whole of the representations fits on a GPU, making retrieval even faster. 
 
@@ -190,19 +190,19 @@ ROUGE-2 and ROUGE-3 would use bigrams and trigrams respectively. Once we have de
 
 The recall counts the number of overlapping n-grams found in both the model output and reference — then divides this number by the total number of n-grams in the reference. It looks like this:
 
-<img src="README.assets/recall_rouge.png" alt="recall_rouge" style="zoom:30%;" />
+<img src="README.assets/recall_rouge.png" alt="recall_rouge"  />
 
 ###### Precision
 
 The precision metric is calculated in almost the same way, but rather than dividing by the reference n-gram count, we divide by the model n-gram count.
 
-<img src="README.assets/precision_rouge.png" alt="precision_rouge" style="zoom:30%;" />
+<img src="README.assets/precision_rouge.png" alt="precision_rouge"  />
 
 ###### F1-Score
 
 Now that we both the recall and precision values, we can use them to calculate our ROUGE F1 score like so:
 
-<img src="README.assets/f1score_rouge.png" alt="f1score_rouge" style="zoom:33%;" />
+<img src="README.assets/f1score_rouge.png" alt="f1score_rouge"  />
 
 ###### ROUGE-L
 
@@ -404,9 +404,15 @@ Here is the rouge metrics for quantitative evaluation of the generator model :
 
 ## 8. Predictions 
 
-Following is the sample predictions made by our model . Predictions for 100 queations from our test set is available [here](https://www.sbert.net/examples/unsupervised_learning/CT_In-Batch_Negatives/README.html) 
+Following are some sample predictions made by our model . Predictions for 100 questions from our test set is available [here](https://github.com/krishnarevi94/Capstone/blob/main/result_100_test_questions.xlsx) .
 
-![predictions](README.assets/predictions.PNG)
+| Question                                                     | Predicted Answer                                             | Actual answer                                                |
+| ------------------------------------------------------------ | ------------------------------------------------------------ | ------------------------------------------------------------ |
+| does  pytorch has geometric deep learning support?           | PyTorch Geometric (PyG) is a  geometric deep learning extension library for PyTorch.It consists of various  methods for deep learning on graphs and other irregular structures, also  known as Geometric Deep Learning, from a variety of published papers. In addition,  it consists of an easy-to-use mini-batch loader for many small and single  giant graphs, multi GPU-support, a large number of common benchmark datasets  (based on simple interfaces to create your own), and helpful transforms, both  for learning on arbitrary graphs as well as on 3D clouds. | PyTorch Geometric (PyG) is a  geometric deep learning extension library for PyTorch.It consists of various  methods for deep learning on graphs and other irregular structures, also  known as geometric deep learning, from a variety of published papers |
+| In  Pytorch, quantity.backward() computes the gradient of quantity wrt which of  the parameters? | The argument grad_output is the  gradient with respect to the output given by the autograd engine. grad_input  is the tensor where the output is the sum of the gradients in each of its  uses. In other words, if your matrix element x has positive gradient when  first applied and negative when used the second time, it may be that the net  effects will cancel out and it will stay as it is (or change just a bit). If  both applications call for x to be higher, it will raise more than if it was  used just once, etc. | Computing quantity requires  constructing a 2-sorted graph with nodes being either tensors or  differentiable operations on tensors (a so-called computational graph). Under  the hood, pytorch keeps track of this graph for you. When you call  quantity.backward(), you're asking pytorch to perform an inverse traversal of  the graph, from the output to the inputs, using the derivative of each  operation encountered rather the operation itself. Leaf tensors that are  flagged as requiring gradients accumulate the gradients computed by backward.  An optimizer is a different story: it simply implements an optimization  strategy on a set of parameters, hence it needs to know which parameters you  want it to be optimizing. So quantity.backward() computes gradients, optim.step()  uses these gradients to perform on a optimization step, updating the  parameters contained in model. As for efficiency, I don't see any argument in  favor of specifying parameters in the backward pass (what would the semantics  of that be?). If what you'd want is to avoid traversal of parts of the graph  in backward mode, pytorch will do it automagically for you if you remember: *  you can mark leaf tensors as not requiring grad * a non-leaf tensor -- the  output of some operation f(x1,...xN) -- requires grad if at least one of  x1...xN requires grad * a tensor that doesn't require grad blocks backward  traversal, ensuring no unnecessary computation |
+| What  does the stashing logic save and restore for the current device? | the stashing logic save and  restore for the current device. This means that if your model is dynamic,  e.g., changes behavior depending on input data, the export won’t be accurate.  Similarly, a trace is likely to be valid only for a specific input size (which  is one reason why we require explicit inputs on tracing.) | the RNG state                                                |
+| PRelue  is not supperted with mmdnn?                         | Yes MMDNN Support supports  LeakyRelu. Check the link below for pytorch_emitter.py implementation from  MMdNN. PyTorch_EMITTER.py If you check the implementation you will find all  the supported operations and it doesn't include PRELU. | Yes MMDNN Support supports  LeakyRelu. Check the link below for pytorch_emitter.py implementation from  MMdNN. PyTorch_EMITTER.py If you check the implementation you will find all  the supported operations and it doesn't include PRELU. |
+| How can  I assign a list to a torch.tensor?                  | You can directly convert python  list to a pytorch Tensor by defining the dtype. For example, import torch  a_list = [3,23,53,32,53] A_Tensor = torch.Tensor(A_LIST)  print(a_tensor.int()) Here is the documentation: You can use x.item() to get  a Python number from a tensor that has one element. | use torch.Tensor(list).                                      |
 
 Some of these answers make sense! The model seems to sometimes struggle with starting some of the answers,this mainly seems like an issue with data . Some of the data we trained with isn't cleaned properly. but we're getting some  good information overall. At least we got a good model ready with which we can retrain any other domain data( properly cleaned one!!) with minimal rework .
 
