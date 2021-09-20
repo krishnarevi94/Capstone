@@ -81,7 +81,11 @@ As mentioned above, we want to train a system to produce question and answer emb
 
 Unfortunately, comparing all questions to all answers before taking every single gradient step is computationally prohibitive. instead, we simply process medium to large batches of question-answer pairs and make sure that the dot product of a question with its answer is larger than with all other answers in the batch, and *vice versa*.
 
-We use a cross-entropy loss for the multinomial distribution over all of the answers (or questions) in a batch, and make use of [PyTorch gradient checkpointing](https://pytorch.org/docs/stable/checkpoint.html) to be able to use large batches with limited GPU memory. Checkpointing works by trading compute for memory. Rather than storing all intermediate activations of the entire computation graph for computing backward, the checkpointed part does not save intermediate activations and instead recomputes them in the backward pass. It can be applied to any part of a model.
+Following is a representation of contrastive training taken from [website](https://www.sbert.net/examples/unsupervised_learning/CT_In-Batch_Negatives/README.html) 
+
+![CT](README.assets/CT-1632122257792.jpg)
+
+We utilize  cross-entropy loss for the multinomial distribution over all of the answers (or questions) in a batch, and make use of [PyTorch gradient checkpointing](https://pytorch.org/docs/stable/checkpoint.html) to be able to use large batches with limited GPU memory. Checkpointing works by trading compute for memory. Rather than storing all intermediate activations of the entire computation graph for computing backward, the checkpointed part does not save intermediate activations and instead recomputes them in the backward pass. It can be applied to any part of a model.
 
 To train the retriever, we show the model batches of 512 question-answer pairs. The model needs to ensure that the embedding of each question in the batch is closer to the embedding of its corresponding answer than to the embedding of any other answer in the batch.
 
@@ -93,7 +97,7 @@ Once the model is trained, we use the model to compute passage embeddings for al
 
 Now that we have trained our model to compute query and answer embeddings and used it to compute passage embeddings for all our document snippets in the corpus, let's see whether it can find supporting evidence for a new question. At test time, the dense retriever model encodes the question and compares its embedding to the pre-computed representation of all the document snippets in the corpus by doing Max Inner Product Search. The ten passages with the closest embedding are returned to create the support document. 
 
-----ADD IMAGE---
+![using the Trained Dense Retriever](README.assets/using the Trained Dense Retriever.PNG)
 
 The MIPS part can be executed efficiently with the faiss library. Additionally, since we computed 128-dimensional passage embeddings, the whole of the representations fits on a GPU, making retrieval even faster. 
 
@@ -198,7 +202,7 @@ The precision metric is calculated in almost the same way, but rather than divid
 
 Now that we both the recall and precision values, we can use them to calculate our ROUGE F1 score like so:
 
-<img src="README.assets/f1score_rouge.png" alt="f1score_rouge" style="zoom:30%;" />
+<img src="README.assets/f1score_rouge.png" alt="f1score_rouge" style="zoom:33%;" />
 
 ###### ROUGE-L
 
@@ -400,7 +404,9 @@ Here is the rouge metrics for quantitative evaluation of the generator model :
 
 ## 8. Predictions 
 
+Following is the sample predictions made by our model . Predictions for 100 queations from our test set is available [here](https://www.sbert.net/examples/unsupervised_learning/CT_In-Batch_Negatives/README.html) 
 
+![predictions](README.assets/predictions.PNG)
 
 Some of these answers make sense! The model seems to sometimes struggle with starting some of the answers,this mainly seems like an issue with data . Some of the data we trained with isn't cleaned properly. but we're getting some  good information overall. At least we got a good model ready with which we can retrain any other domain data( properly cleaned one!!) with minimal rework .
 
@@ -409,8 +415,7 @@ Some of these answers make sense! The model seems to sometimes struggle with sta
 - Data : Data has been most challenging part of this problem . We had 5 separate teams collecting data . 	
 
   - A good amount of "cleaned "answers had urls , name of authors , tags ,tables etc 
-
-  - Pytorch documentation team provided 18k + data , but only 2k was useful as all other answers had words clubbed together , was not in readable format . For the sake of having good training data I had to omit 16k + QnA pairs from pytorch documentation team (which is  huge !!) . Cleaning this entire set was impossible by one person in 10 days so I had to loose this . 
+  - Pytorch documentation team provided 18k + data , but only 2k was useful as all other answers had words clubbed together , was not in readable format . For the sake of having good training data I had to omit 16k + QnA pairs from pytorch documentation team (which is  huge !!) . Cleaning this entire set was impossible by one person in 10 days so I had to loose this data . 
   - Another file had all "y" and "z" same . Not even single answer was cleaned . Had to clean this additional 1000 QnA pairs to have at least 10k QnA pairs for training 
   - Many teams didn't follow the correct "x","y","z" json data format . Some had additional variables like "null" ,"id" etc , some used "X","Y","Z" instead of "x","y","z"
   - Manually checking all the data was impossible , I have fixed what I could fix in short time with data_processing.py file
